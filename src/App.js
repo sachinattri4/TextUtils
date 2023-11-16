@@ -4,7 +4,7 @@ import About from './components/About';
 import Navbar from './components/Navbar';
 import TextForm from './components/TextForm';
 import Alert from './components/Alert';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
  const [ mode, setMode ] = useState('light');
@@ -19,44 +19,51 @@ function App() {
         setAlert(null);
       }, 2000);
  }
- const themeMode = (themeColor) => {
-  /* switch(themeColor){ 
-    case "dark": { return setMode('dark') }
-    case "danger":
-    case "success":
-    case "primary":
-    case "info":
-    default:  */
-    if(themeColor === 'light'){
-      setMode('dark');
-      document.body.style.backgroundColor='#042743';
-      showAlert("Dark mode has been enabled", "success");
-    }
-    else if(themeColor === 'dark'){
-      setMode('light');
-      document.body.style.backgroundColor = 'white';
-      showAlert("Dark mode has been enabled", "success");
-    }
-    else if(themeColor === 'danger'){
-      setMode('danger');
-      document.body.style.backgroundColor='white';
-      showAlert("Danger mode has been enabled", "success");
-    }
-    else if(themeColor === 'success'){
-      setMode('success');
-      document.body.style.backgroundColor = 'white';
-      showAlert("success mode has been enabled", "success");
-    }
-    else if(themeColor === 'primary'){
-      setMode('primary');
+ const darkTheme = ()=>{
+  setMode('light');
+  document.body.style.backgroundColor='white';
+  showAlert("White mode has been enabled", "success");
+ }
+ 
+ const lightTheme = ()=>{
+  setMode('dark');
+  document.body.style.backgroundColor='#042743';
+  showAlert("Dark mode has been enabled", "success");
+ }
+
+ const dangerTheme = ()=>{
+    setMode('danger');
+    document.body.style.backgroundColor='white';
+    showAlert("Danger mode has been enabled", "success");
+ }
+
+ const successTheme = ()=>{
+    setMode('success');
+    document.body.style.backgroundColor = 'white';
+    showAlert("success mode has been enabled", "success");
+  }
+
+  const primaryTheme = ()=>{
+    setMode('primary');
       document.body.style.backgroundColor = 'white';
       showAlert("Primary mode has been enabled", "success");
-    }
-    else if(themeColor === 'info'){
-      setMode('info');
+  }
+
+  const infoTheme = ()=>{
+    setMode('info');
       document.body.style.backgroundColor = 'white';
       showAlert("Info mode has been enabled", "success");
-    }
+  }
+
+ const themeMode = (themeColor) => {
+   switch(themeColor){ 
+    case "dark": return darkTheme();
+    case "danger": return dangerTheme();
+    case "success": return successTheme();
+    case "primary": return primaryTheme();
+    case "info": return infoTheme();
+    default: return lightTheme();
+   }
   }
   
   return (
@@ -64,14 +71,10 @@ function App() {
       <Navbar title="TextUtils" mode = { mode } themeMode = { themeMode } />
       <Alert alert = { alert }/>
       <div className="container my-3">
-      <Switch>
-          <Route exact path="/about">
-          <About />
-          </Route>
-          <Route exact path="/">
-          <TextForm showAlert = { showAlert } heading="Enter text to analyze below" mode = { mode } />
-          </Route>
-        </Switch>
+      <Routes>
+        <Route exact path='/about' element={ <About /> }></Route> 
+        <Route exact path='/' element={ <TextForm showAlert = { showAlert } heading="Enter text to analyze below" mode = { mode } /> }></Route> 
+        </Routes>
       </div>
       </Router>  
   );
